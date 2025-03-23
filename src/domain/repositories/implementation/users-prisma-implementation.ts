@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import type { IUserRepository } from "../users-repository";
-import { User } from "@/domain/users/User";
+import type { User } from "@/domain/users/User";
 import { databaseAdapter } from "@/domain/helpers/databaseAdapter";
 
 export class UsersRepository implements IUserRepository {
@@ -10,7 +10,7 @@ export class UsersRepository implements IUserRepository {
 		this.repository = databaseAdapter;
 	}
 
-	async create(user: User): Promise<User> {
+	async create(user: User) {
 		return this.repository.user.create({
 			data: {
 				email: user.email,
@@ -19,17 +19,13 @@ export class UsersRepository implements IUserRepository {
 		});
 	}
 
-	async findByEmail(email: string): Promise<User | undefined> {
-		const user = await this.repository.user.findUnique({
+	async list(email: string) {
+		const users = await this.repository.user.findMany({
 			where: {
-				email: email,
+				email: email ? { contains: email } : undefined,
 			},
 		});
 
-		if (!user) {
-			return undefined;
-		}
-
-		return new User(user.id, user.name, user.email);
+		return users;
 	}
 }

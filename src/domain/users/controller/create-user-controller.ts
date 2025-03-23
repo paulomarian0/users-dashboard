@@ -7,11 +7,7 @@ export class CreateUserController {
 	async handle(request: NextRequest): Promise<NextResponse> {
 		try {
 			const { id, name, email } = await request.json();
-			console.log("aaa");
-
 			const user = await this.createUserUseCase.execute({ id, name, email });
-
-			console.log(user);
 
 			return NextResponse.json(user, { status: 201 });
 		} catch (error) {
