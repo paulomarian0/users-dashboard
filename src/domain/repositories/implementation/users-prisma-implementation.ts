@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import type { IUserRepository } from "../users-repository";
 import type { User } from "@/domain/users/User";
 import { databaseAdapter } from "@/domain/helpers/databaseAdapter";
@@ -27,5 +26,21 @@ export class UsersRepository implements IUserRepository {
 		});
 
 		return users;
+	}
+
+	async find({
+		id,
+		name,
+		email,
+	}: { id?: string; name?: string; email?: string }) {
+		const user = await this.repository.user.findFirst({
+			where: {
+				id,
+				name,
+				email,
+			},
+		});
+
+		return user;
 	}
 }
