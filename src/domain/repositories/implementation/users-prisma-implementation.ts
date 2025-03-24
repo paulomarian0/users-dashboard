@@ -56,4 +56,15 @@ export class UsersRepository implements IUserRepository {
 			},
 		});
 	}
+
+	async update({ id, name }: { id: string; name: string }) {
+		return this.repository.user.update({
+			where: {
+				id,
+			},
+			data: {
+				name,
+			},
+		});
+	}
 }
