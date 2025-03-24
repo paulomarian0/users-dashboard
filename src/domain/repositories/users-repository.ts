@@ -8,4 +8,5 @@ export interface IUserRepository {
 		name,
 		email,
 	}: { id?: string; email?: string; name?: string }): Promise<User | null>;
+	delete({ id }: { id: string }): Promise<User>;
 }

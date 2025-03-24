@@ -22,6 +22,7 @@ export class UsersRepository implements IUserRepository {
 		const users = await this.repository.user.findMany({
 			where: {
 				email: email ? { contains: email } : undefined,
+				deletedAt: null,
 			},
 		});
 
@@ -38,9 +39,21 @@ export class UsersRepository implements IUserRepository {
 				id,
 				name,
 				email,
+				deletedAt: null,
 			},
 		});
 
 		return user;
+	}
+
+	async delete({ id }: { id: string }) {
+		return this.repository.user.update({
+			where: {
+				id,
+			},
+			data: {
+				deletedAt: new Date(),
+			},
+		});
 	}
 }
